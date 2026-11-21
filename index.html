@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>C-Four videos · review</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy: #1a3668; --sand: #f5f2ec; --line: #e2ddd3; --muted: #6b6f7a; --pen: #ff2d2d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--sand); color: #1d2230; font: 15px/1.5 Roboto, system-ui, sans-serif; }
+  a { color: var(--navy); }
+  button { font: inherit; cursor: pointer; }
+  header { background: #fff; border-bottom: 1px solid var(--line); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+  .top { display: flex; align-items: center; gap: 18px; padding: 16px 0; }
+  .top img { height: 34px; }
+  .top h1 { font-size: 17px; font-weight: 500; margin: 0; color: var(--navy); }
+  .top .sp { flex: 1; }
+  .btn { border: 1px solid var(--navy); background: #fff; color: var(--navy); border-radius: 6px; padding: 6px 12px; font-weight: 500; }
+  .btn.solid { background: var(--navy); color: #fff; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .intro { padding: 18px 0 8px; display: grid; grid-template-columns: 1fr auto; gap: 8px 30px; align-items: start; }
+  .intro ol { margin: 0; padding-left: 20px; }
+  .intro li { margin: 2px 0; }
+  .intro p { margin: 0 0 6px; }
+  .note-q { color: var(--muted); font-size: 13.5px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0 4px; }
+  .nav a { text-decoration: none; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 4px 12px; font-size: 13.5px; }
+  .nav a b { color: var(--navy); }
+  .nav .count { color: var(--muted); }
+  section.video { background: #fff; border: 1px solid var(--line); border-radius: 10px; margin: 18px 0; padding: 18px 18px 14px; scroll-margin-top: 12px; }
+  section h2 { margin: 0; font-size: 20px; color: var(--navy); font-weight: 700; }
+  section h2 small { color: var(--muted); font-weight: 400; font-size: 13px; margin-left: 8px; }
+  .blurb { margin: 2px 0 12px; color: #3b4150; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); gap: 18px; align-items: start; }
+  .player { position: relative; }
+  .player video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #000; border-radius: 6px; }
+  video:fullscreen, video:-webkit-full-screen { object-fit: contain; }
+  .player canvas.ink { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 16 / 9; pointer-events: none; display: none; border-radius: 6px; }
+  .player canvas.ink.show { display: block; }
+  .player canvas.ink.drawing { pointer-events: auto; cursor: crosshair; outline: 3px solid var(--pen); outline-offset: -3px; }
+  .marks { position: relative; height: 14px; margin: 6px 2px 0; border-radius: 7px; background: #efebe3; }
+  .marks:empty { display: none; }
+  .marks button { position: absolute; top: 2px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; border: 0; padding: 0; background: var(--navy); }
+  .marks button:hover { transform: scale(1.35); }
+  .marks button.old { background: #a9b0bf; }
+  .extra { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+  details { border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; flex: 1 1 260px; }
+  details summary { cursor: pointer; font-weight: 500; color: var(--navy); }
+  details p, details ul { margin: 6px 0 2px; }
+  details ul { padding-left: 18px; }
+  .panel { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .composer { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: #fbfaf7; }
+  .crow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .chip { border: 1px solid var(--navy); background: #fff; color: var(--navy); border-radius: 14px; padding: 2px 10px; font-size: 13px; font-weight: 500; }
+  .chip.off { border-style: dashed; color: var(--muted); border-color: #b9b4a9; font-weight: 400; }
+  .x { border: 0; background: none; color: var(--muted); font-size: 16px; line-height: 1; padding: 0 2px; }
+  .tool { border: 1px solid #c9c3b8; background: #fff; border-radius: 14px; padding: 2px 10px; font-size: 13px; }
+  .tool.on { border-color: var(--pen); color: var(--pen); }
+  textarea { width: 100%; min-height: 64px; margin: 8px 0; padding: 8px; border: 1px solid #cfc9be; border-radius: 6px; font: inherit; resize: vertical; background: #fff; }
+  input.name { border: 1px solid #cfc9be; border-radius: 6px; padding: 5px 8px; font: inherit; width: 150px; }
+  .who { color: var(--muted); font-size: 13px; }
+  .who button { border: 0; background: none; color: var(--navy); padding: 0; text-decoration: underline; font-size: 13px; }
+  .msg { font-size: 13px; color: #b3261e; }
+  .notes { display: flex; flex-direction: column; gap: 8px; max-height: 430px; overflow: auto; padding-right: 2px; }
+  .empty { color: var(--muted); font-size: 13.5px; padding: 4px 2px; }
+  .n { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; }
+  .n .h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .n .h b { color: #1d2230; font-weight: 500; }
+  .t { border: 0; background: var(--navy); color: #fff; border-radius: 12px; padding: 1px 9px; font-size: 12.5px; font-weight: 500; }
+  .tag { font-size: 11.5px; border: 1px solid #c9c3b8; border-radius: 10px; padding: 0 6px; }
+  .n .body { margin: 4px 0 0; white-space: pre-wrap; word-wrap: break-word; }
+  .n img { display: block; width: 100%; max-width: 280px; margin-top: 6px; border-radius: 4px; cursor: zoom-in; }
+  .n .own { margin-left: auto; }
+  .n .own button { border: 0; background: none; color: var(--muted); font-size: 12.5px; padding: 0 0 0 8px; text-decoration: underline; }
+  section.general .grid { grid-template-columns: 1fr; }
+  .lightbox { position: fixed; inset: 0; background: rgba(10, 14, 24, .88); display: none; align-items: center; justify-content: center; z-index: 10; cursor: zoom-out; }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 94vw; max-height: 90vh; border-radius: 6px; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 8px 16px; border-radius: 8px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 11; }
+  .toast.show { opacity: 1; }
+  footer { color: var(--muted); font-size: 12.5px; padding: 6px 0 30px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .intro { grid-template-columns: 1fr; } .notes { max-height: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <img src="media/remsafe-logo.png" alt="Remsafe">
+    <h1>C-Four Electric Window Winder · six videos for review</h1>
+    <span class="sp"></span>
+    <button class="btn" id="copyAll" title="Copy every note on this page as plain text">Copy all notes</button>
+  </div>
+</header>
+<main class="wrap">
+  <div class="intro">
+    <div>
+      <p><b>Leaving notes is easy:</b></p>
+      <ol>
+        <li>Pause a video wherever something should change, then type your note beside it. The moment and a picture of that frame are saved with your note.</li>
+        <li>Want to point at something? Press <b>Draw</b> and circle it on the paused frame.</li>
+        <li>Press <b>Save</b> (or Ctrl/⌘ + Enter). Notes are saved on this page, and clicking a note's time jumps the video there.</li>
+      </ol>
+    </div>
+    <p class="note-q" style="max-width:360px">These are preview renders: the final full-HD versions will show fine details (button labels, small product markings) more sharply. Known issues are listed under each video. You can edit or delete your own notes.</p>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div id="videos"></div>
+</main>
+<footer class="wrap">Draft previews · 20 November 2026</footer>
+<div class="lightbox" id="lightbox"><img alt=""></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'https://rbdvxlqiklhysozbggvo.supabase.co', KEY = 'sb_publishable_nphoDMrnDntR_RMjH7qSLg_aOKZ8kU2';
+const VIDEOS = [
+ {
+  "n": 1,
+  "version": "v1-commercial-draft4-v6",
+  "title": "Modern living, effortless control",
+  "short": "Modern living",
+  "blurb": "A couple relaxing at home opens all four living-room windows at once, with one press of the remote.",
+  "vo": "Introducing the Remsafe C-Four Electric Window Winder. Designed for Australian windows and the way we live today. Imagine opening four windows at once, with just one touch of a button. It's window control, made effortless. Meet the new Remsafe C-Four Electric Window Winder. Find out more.",
+  "issues": [
+   "Just before the press, her thumb rests across the top buttons instead of landing cleanly on the up arrow."
+  ],
+  "file": "media/v1-commercial-draft4-v6.mp4",
+  "poster": "media/v1-commercial-draft4-v6.jpg",
+  "len": "0:26"
+ },
+ {
+  "n": 2,
+  "version": "v2-commercial-smooth-v1",
+  "title": "Hard-to-reach windows",
+  "short": "Hard to reach",
+  "blurb": "She can barely reach the winder above the kitchen sink. With the C-Four, the window opens from the remote.",
+  "vo": "Struggling to reach your windows? Now there's a simple solution, designed specifically for Australian windows. Just press the remote to open or close your window. No stretching or struggling. Make everyday life easier. Discover the Remsafe C-Four Electric Window Winder.",
+  "issues": [],
+  "file": "media/v2-commercial-smooth-v1.mp4",
+  "poster": "media/v2-commercial-smooth-v1.jpg",
+  "len": "0:24"
+ },
+ {
+  "n": 3,
+  "version": "v3-commercial-room4-v2",
+  "title": "From manual to electric windows",
+  "short": "Manual to electric",
+  "blurb": "We stopped winding car windows long ago, so why still wind them at home? From a 1990s car to a modern living room.",
+  "vo": "Introducing the Remsafe C-Four Electric Window Winder. Remember when we had to wind down our car windows? We've come a long way since then. So why are we still winding windows at home? Designed for Australian windows, the C-Four brings that same convenience into your home. Open your windows with the touch of a button. Discover the Remsafe C-Four.",
+  "issues": [],
+  "file": "media/v3-commercial-room4-v2.mp4",
+  "poster": "media/v3-commercial-room4-v2.jpg",
+  "len": "0:27"
+ },
+ {
+  "n": 4,
+  "version": "v4-commercial-draft3-v3",
+  "title": "Four windows, one remote",
+  "short": "Four windows",
+  "blurb": "Winding the windows one by one, or opening all four at once with a single remote.",
+  "vo": "Meet the Remsafe C-Four Electric Window Winder. Opening four windows, one at a time? There's an easier way. Designed for Australian homes, the C-Four lets you operate up to four windows with a single remote. One button, four windows. It's that simple. See the Remsafe C-Four in action.",
+  "issues": [
+   "In the final wide shot the C-Fours are small, so their speaker star and cover details are not visible."
+  ],
+  "file": "media/v4-commercial-draft3-v3.mp4",
+  "poster": "media/v4-commercial-draft3-v3.jpg",
+  "len": "0:23"
+ },
+ {
+  "n": 5,
+  "version": "v5-commercial-v6",
+  "title": "A simple upgrade for existing windows",
+  "short": "Simple upgrade",
+  "blurb": "The C-Four replaces an existing manual winder in the same spot: no drilling, no electrician.",
+  "vo": "Introducing the Remsafe C-Four Electric Window Winder. Still winding your windows by hand? Developed specifically for Australian windows, the C-Four is designed to replace most existing manual winders. No drilling, no modifications and no electrician needed with battery operation. A straightforward DIY upgrade, without replacing your windows. See how the Remsafe C-Four works.",
+  "issues": [
+   "In the replacement shot the picture holds still for about a second on the empty ledge, and again after the C-Four lands."
+  ],
+  "file": "media/v5-commercial-v6.mp4",
+  "poster": "media/v5-commercial-v6.jpg",
+  "len": "0:28"
+ },
+ {
+  "n": 6,
+  "version": "v6-commercial-v5",
+  "title": "Removable rechargeable battery",
+  "short": "Battery",
+  "blurb": "The battery slides out, charges by USB-C and goes back in.",
+  "vo": "Meet the Remsafe C-Four Electric Window Winder. Designed with Australian homes in mind, the C-Four runs on a removable, rechargeable battery. No need to run power cables or keep replacing batteries. Simply slide it out, charge with the supplied USB-C cable and pop it back in. It's that easy. Discover the Remsafe C-Four.",
+  "issues": [
+   "The battery's small moulded mark (four lines and a triangle) is softer and darker than on the real battery.",
+   "A faint shadow line from the charging cable runs down the kitchen wall."
+  ],
+  "file": "media/v6-commercial-v5.mp4",
+  "poster": "media/v6-commercial-v5.jpg",
+  "len": "0:27"
+ },
+ {
+  "n": 0,
+  "version": "",
+  "title": "General notes",
+  "short": "General notes",
+  "blurb": "Anything about the six videos as a whole: voice, music, pace, the end cards."
+ }
+];
+
+const $ = (s, el = document) => el.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const fmt = t => { const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + (s < 10 ? '0' : '') + s.toFixed(1); };
+const store = { get: (k, d) => { try { return JSON.parse(localStorage.getItem('c4r-' + k)) ?? d; } catch (e) { return d; } },
+                set: (k, v) => { try { localStorage.setItem('c4r-' + k, JSON.stringify(v)); } catch (e) {} } };
+const tokens = store.get('tokens', {});
+let NOTES = [];
+const UI = {};
+
+function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => e.classList.remove('show'), 2200); }
+
+async function api(path, opts = {}) {
+  const r = await fetch(API + path, { ...opts, headers: { apikey: KEY, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+  if (!r.ok) throw new Error(r.status + ' ' + (await r.text()).slice(0, 200));
+  const txt = await r.text();
+  return txt ? JSON.parse(txt) : null;
+}
+const COLS = 'id,created_at,video,version,t,author,body,frame';
+async function load() { NOTES = await api('/rest/v1/review_notes?select=' + COLS + '&order=created_at'); renderAll(); }
+
+function grab(video) {          // the current frame as a 640x360 canvas (same-origin video, so this is allowed)
+  try { if (video.readyState < 2) return null;
+    const c = document.createElement('canvas'); c.width = 640; c.height = 360;
+    c.getContext('2d').drawImage(video, 0, 0, 640, 360); return c; } catch (e) { return null; }
+}
+function paint(ctx, w, h, strokes) {
+  ctx.strokeStyle = '#ff2d2d'; ctx.lineWidth = Math.max(3, w * 0.006); ctx.lineCap = ctx.lineJoin = 'round';
+  for (const s of strokes) { ctx.beginPath(); s.forEach((p, i) => i ? ctx.lineTo(p[0] * w, p[1] * h) : ctx.moveTo(p[0] * w, p[1] * h)); if (s.length === 1) ctx.lineTo(s[0][0] * w + 0.5, s[0][1] * h); ctx.stroke(); }
+}
+
+function buildVideo(v) {
+  const sec = el('section', 'video' + (v.n ? '' : ' general')); sec.id = 'v' + v.n;
+  const h2 = el('h2', null, v.n ? v.n + ' · ' + v.title : v.title); if (v.len) h2.append(el('small', null, v.len));
+  sec.append(h2, el('p', 'blurb', v.blurb));
+  const grid = el('div', 'grid'); sec.append(grid);
+  const ui = { v, sec, t: null, auto: true, locked: false, snap: null, strokes: [], drawing: false };
+  UI[v.n] = ui;
+  if (v.n) {
+    const left = el('div'); const player = el('div', 'player');
+    const video = el('video'); video.src = v.file; video.poster = v.poster; video.controls = true; video.preload = 'metadata'; video.playsInline = true;
+    const ink = el('canvas', 'ink');
+    player.append(video, ink); left.append(player);
+    const marks = el('div', 'marks'); marks.title = 'Notes on the timeline'; left.append(marks);
+    const extra = el('div', 'extra');
+    const dv = el('details'); dv.append(el('summary', null, 'Voiceover'), el('p', null, v.vo));
+    const di = el('details'); di.append(el('summary', null, v.issues.length ? 'Known issues (' + v.issues.length + ')' : 'Known issues'));
+    if (v.issues.length) { const ul = el('ul'); v.issues.forEach(i => ul.append(el('li', null, i))); di.append(ul); } else di.append(el('p', null, 'None that we know of.'));
+    extra.append(dv, di); left.append(extra); grid.append(left);
+    Object.assign(ui, { video, ink, marks });
+    video.addEventListener('pause', () => onStill(ui));
+    video.addEventListener('seeked', () => { if (video.paused) onStill(ui); syncInk(ui); });
+    video.addEventListener('play', () => onPlay(ui));
+    video.addEventListener('loadedmetadata', () => renderMarks(ui));
+    new ResizeObserver(() => syncInk(ui)).observe(video);
+    let cur = null;
+    ink.addEventListener('pointerdown', e => { if (!ui.drawing) return; ink.setPointerCapture(e.pointerId); cur = [pt(ink, e)]; ui.strokes.push(cur); syncInk(ui); updateComposer(ui); });
+    ink.addEventListener('pointermove', e => { if (cur) { cur.push(pt(ink, e)); syncInk(ui); } });
+    ink.addEventListener('pointerup', () => { cur = null; });
+  }
+  const panel = el('div', 'panel');
+  const comp = el('div', 'composer');
+  const row = el('div', 'crow');
+  const chip = el('button', 'chip'); chip.type = 'button';
+  const x = el('button', 'x', '×'); x.type = 'button'; x.title = 'No time: a general note';
+  const draw = el('button', 'tool', '✎ Draw'); draw.type = 'button'; draw.title = 'Circle something on the paused frame';
+  const clear = el('button', 'tool', 'Clear drawing'); clear.type = 'button';
+  if (v.n) row.append(chip, x, draw, clear);
+  const ta = el('textarea'); ta.placeholder = v.n ? 'Pause the video and type a note…' : 'Anything about the videos as a whole…';
+  ta.value = store.get('draft-' + v.n, '');
+  const row2 = el('div', 'crow');
+  const name = el('input', 'name'); name.placeholder = 'Your name'; name.maxLength = 80;
+  const who = el('span', 'who'); const save = el('button', 'btn solid', 'Save'); save.type = 'button';
+  const msg = el('span', 'msg');
+  row2.append(name, who, el('span', 'sp'), msg, save); row2.style.justifyContent = 'flex-end';
+  comp.append(row, ta, row2); panel.append(comp);
+  const list = el('div', 'notes'); panel.append(list); grid.append(panel);
+  Object.assign(ui, { chip, x, draw, clear, ta, name, who, save, msg, list });
+
+  chip.onclick = () => { if (!v.n) return; ui.auto = true; if (ui.video.currentTime > 0.05) capture(ui); else { ui.video.focus(); toast('Play the video and pause where your note is about'); } };
+  x.onclick = () => { ui.auto = false; ui.t = null; ui.snap = null; ui.strokes = []; ui.drawing = false; syncInk(ui); updateComposer(ui); };
+  draw.onclick = () => {
+    if (ui.t == null) return;
+    if (!ui.video.paused) ui.video.pause();
+    if (Math.abs(ui.video.currentTime - ui.t) > 0.04) { ui.keepDrawing = true; ui.video.currentTime = ui.t; }
+    ui.drawing = !ui.drawing; syncInk(ui); updateComposer(ui);
+  };
+  clear.onclick = () => { ui.strokes = []; syncInk(ui); updateComposer(ui); };
+  ta.addEventListener('focus', () => { if (v.n && !ui.locked && !ui.video.paused) ui.video.pause(); });
+  ta.addEventListener('input', () => { store.set('draft-' + v.n, ta.value); if (v.n) { if (ta.value.trim() && !ui.locked) { if (ui.t == null && ui.auto && ui.video.currentTime > 0.05) capture(ui); ui.locked = true; } if (!ta.value.trim() && !ui.strokes.length) ui.locked = false; } updateComposer(ui); });
+  ta.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); submit(ui); } });
+  save.onclick = () => submit(ui);
+  who.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') { name.style.display = ''; who.style.display = 'none'; name.focus(); } });
+  updateComposer(ui);
+  return sec;
+}
+function pt(canvas, e) { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+
+function capture(ui) { ui.t = ui.video.currentTime; ui.snap = grab(ui.video); ui.strokes = []; ui.drawing = false; syncInk(ui); updateComposer(ui); }
+function onStill(ui) {
+  if (ui.keepDrawing) { ui.keepDrawing = false; syncInk(ui); return; }
+  if (!ui.locked && ui.auto && ui.video.currentTime > 0.05) capture(ui);
+  syncInk(ui); updateComposer(ui);
+}
+function onPlay(ui) {
+  ui.drawing = false;
+  if (!ui.locked) { ui.t = null; ui.snap = null; ui.strokes = []; }
+  syncInk(ui); updateComposer(ui);
+}
+function syncInk(ui) {
+  if (!ui.ink) return;
+  const atFrame = ui.t != null && ui.video.paused && Math.abs(ui.video.currentTime - ui.t) < 0.04;
+  const show = atFrame && (ui.drawing || ui.strokes.length > 0);
+  ui.ink.classList.toggle('show', show); ui.ink.classList.toggle('drawing', show && ui.drawing);
+  if (!show) return;
+  const r = ui.video.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  ui.ink.width = Math.round(r.width * d); ui.ink.height = Math.round(r.height * d);
+  const ctx = ui.ink.getContext('2d'); ctx.clearRect(0, 0, ui.ink.width, ui.ink.height);
+  paint(ctx, ui.ink.width, ui.ink.height, ui.strokes);
+}
+function updateComposer(ui) {
+  const name = store.get('name', '');
+  ui.name.style.display = name ? 'none' : ''; ui.who.style.display = name ? '' : 'none';
+  ui.who.innerHTML = ''; if (name) { ui.who.append('as ' + name + ' · '); const b = el('button', null, 'change'); b.type = 'button'; ui.who.append(b); }
+  if (!ui.v.n) return;
+  if (ui.t != null) { ui.chip.textContent = 'At ' + fmt(ui.t); ui.chip.className = 'chip'; ui.chip.title = 'Click to use the current moment instead'; }
+  else if (!ui.auto) { ui.chip.textContent = 'General note · add a time'; ui.chip.className = 'chip off'; ui.chip.title = 'Attach the current moment'; }
+  else { ui.chip.textContent = 'Pause to attach a time'; ui.chip.className = 'chip off'; ui.chip.title = ''; }
+  ui.x.style.display = ui.t != null ? '' : 'none';
+  ui.draw.style.display = ui.t != null ? '' : 'none';
+  ui.draw.classList.toggle('on', ui.drawing); ui.draw.textContent = ui.drawing ? '✎ Drawing… done' : '✎ Draw';
+  ui.clear.style.display = ui.strokes.length ? '' : 'none';
+}
+
+async function submit(ui) {
+  const body = ui.ta.value.trim(); ui.msg.textContent = '';
+  let name = store.get('name', '');
+  if (!name) { name = ui.name.value.trim(); if (!name) { ui.msg.textContent = 'Please add your name.'; ui.name.focus(); return; } store.set('name', name); }
+  if (!body) { ui.msg.textContent = 'Type a note first.'; ui.ta.focus(); return; }
+  let frame = null;
+  if (ui.v.n && ui.t != null && ui.snap) {
+    const c = document.createElement('canvas'); c.width = 640; c.height = 360; const ctx = c.getContext('2d');
+    ctx.drawImage(ui.snap, 0, 0); paint(ctx, 640, 360, ui.strokes); frame = c.toDataURL('image/jpeg', 0.78);
+  }
+  const token = crypto.randomUUID ? crypto.randomUUID() : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+  ui.save.disabled = true;
+  try {
+    const rows = await api('/rest/v1/review_notes?select=' + COLS, { method: 'POST', headers: { Prefer: 'return=representation' },
+      body: JSON.stringify({ video: ui.v.n, version: ui.v.version, t: ui.v.n ? ui.t : null, author: name, body, frame, edit_token: token }) });
+    tokens[rows[0].id] = token; store.set('tokens', tokens);
+    NOTES.push(rows[0]);
+    ui.ta.value = ''; store.set('draft-' + ui.v.n, ''); ui.locked = false; ui.strokes = []; ui.drawing = false; ui.auto = true;
+    if (ui.v.n) { if (ui.video.paused && ui.video.currentTime > 0.05) capture(ui); else { ui.t = null; ui.snap = null; } syncInk(ui); }
+    renderAll(); toast('Note saved');
+  } catch (e) { ui.msg.textContent = 'Could not save, please try again (your text is kept).'; console.error(e); }
+  ui.save.disabled = false; updateComposer(ui);
+}
+
+function renderNotes(ui) {
+  const ns = NOTES.filter(n => n.video === ui.v.n).sort((a, b) => (a.t ?? 1e9) - (b.t ?? 1e9) || a.created_at.localeCompare(b.created_at));
+  ui.list.innerHTML = '';
+  if (!ns.length) ui.list.append(el('div', 'empty', 'No notes yet.'));
+  for (const n of ns) {
+    const c = el('div', 'n'); const h = el('div', 'h');
+    if (n.t != null && ui.v.n) { const b = el('button', 't', fmt(n.t)); b.type = 'button'; b.title = 'Jump to this moment'; b.onclick = () => jump(ui, n.t); h.append(b); }
+    h.append(el('b', null, n.author || 'Anonymous'), el('span', null, new Date(n.created_at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })));
+    if (ui.v.n && n.version && n.version !== ui.v.version) h.append(el('span', 'tag', 'earlier cut'));
+    if (tokens[n.id]) {
+      const own = el('span', 'own'); const e = el('button', null, 'edit'), d = el('button', null, 'delete'); e.type = d.type = 'button';
+      e.onclick = () => editNote(c, n); d.onclick = () => deleteNote(n); own.append(e, d); h.append(own);
+    }
+    c.append(h, el('p', 'body', n.body));
+    if (n.frame && n.frame.startsWith('data:image/jpeg;base64,')) { const img = el('img'); img.src = n.frame; img.alt = 'Frame at ' + fmt(n.t || 0); img.onclick = () => { $('#lightbox img').src = n.frame; $('#lightbox').classList.add('show'); }; c.append(img); }
+    ui.list.append(c);
+  }
+}
+function renderMarks(ui) {
+  if (!ui.marks) return; ui.marks.innerHTML = '';
+  const d = ui.video.duration; if (!d) return;
+  for (const n of NOTES.filter(n => n.video === ui.v.n && n.t != null)) {
+    const b = el('button'); b.type = 'button'; b.style.left = (100 * n.t / d) + '%';
+    if (n.version !== ui.v.version) b.className = 'old';
+    b.title = fmt(n.t) + ' · ' + (n.author || '') + ': ' + n.body.slice(0, 80); b.onclick = () => jump(ui, n.t); ui.marks.append(b);
+  }
+}
+function jump(ui, t) { ui.video.pause(); ui.video.currentTime = t; ui.video.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+function editNote(card, n) {
+  const ta = el('textarea'); ta.value = n.body; const s = el('button', 'btn solid', 'Save'), c = el('button', 'btn', 'Cancel');
+  const row = el('div', 'crow'); row.style.justifyContent = 'flex-end'; row.append(c, s);
+  card.querySelector('.body').replaceWith(ta); card.append(row); ta.focus();
+  c.onclick = renderAll;
+  s.onclick = async () => {
+    const body = ta.value.trim(); if (!body) return;
+    try { const ok = await api('/rest/v1/rpc/edit_note', { method: 'POST', body: JSON.stringify({ p_id: n.id, p_token: tokens[n.id], p_body: body }) });
+      if (ok) { n.body = body; toast('Note updated'); } else toast('Could not update this note'); } catch (e) { toast('Could not update, please try again'); }
+    renderAll();
+  };
+}
+async function deleteNote(n) {
+  if (!confirm('Delete this note?')) return;
+  try { const ok = await api('/rest/v1/rpc/delete_note', { method: 'POST', body: JSON.stringify({ p_id: n.id, p_token: tokens[n.id] }) });
+    if (ok) { NOTES = NOTES.filter(x => x.id !== n.id); delete tokens[n.id]; store.set('tokens', tokens); toast('Note deleted'); } } catch (e) { toast('Could not delete, please try again'); }
+  renderAll();
+}
+function renderNav() {
+  const nav = $('#nav'); nav.innerHTML = '';
+  for (const v of VIDEOS) {
+    const a = el('a'); a.href = '#v' + v.n; const k = NOTES.filter(n => n.video === v.n).length;
+    a.append(el('b', null, v.n ? String(v.n) : '+'), ' ' + (v.short || v.title) + ' ', el('span', 'count', k ? '· ' + k + (k === 1 ? ' note' : ' notes') : ''));
+    nav.append(a);
+  }
+}
+function renderAll() { for (const v of VIDEOS) { renderNotes(UI[v.n]); renderMarks(UI[v.n]); } renderNav(); }
+
+$('#copyAll').onclick = async () => {
+  const out = [];
+  for (const v of VIDEOS) {
+    const ns = NOTES.filter(n => n.video === v.n).sort((a, b) => (a.t ?? 1e9) - (b.t ?? 1e9));
+    if (!ns.length) continue;
+    out.push((v.n ? 'Video ' + v.n + ': ' : '') + v.title + (v.n ? ' (' + v.version + ')' : ''));
+    for (const n of ns) out.push('  ' + (n.t != null ? fmt(n.t) + '  ' : '') + (n.author || 'Anonymous') + ': ' + n.body.replace(/\n/g, ' ') + (n.version && v.n && n.version !== v.version ? '  [earlier cut ' + n.version + ']' : '') + (n.frame ? '  [frame saved]' : ''));
+    out.push('');
+  }
+  const text = out.join('\n') || 'No notes yet.';
+  try { await navigator.clipboard.writeText(text); toast('All notes copied'); } catch (e) { prompt('Copy the notes:', text); }
+};
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('show');
+
+const root = $('#videos');
+for (const v of VIDEOS) root.append(buildVideo(v));
+renderAll();
+load().catch(e => { console.error(e); toast('Notes could not be loaded, please refresh'); });
+setInterval(() => { if (document.visibilityState === 'visible' && !document.querySelector('.n textarea')) load().catch(() => {}); }, 45000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !document.querySelector('.n textarea')) load().catch(() => {}); });
+</script>
+</body>
+</html>

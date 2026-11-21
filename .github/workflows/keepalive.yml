@@ -1,0 +1,13 @@
+# Free Supabase projects pause after a week without requests; this reads the notes table once a day so the page's
+# note storage stays awake while the review is open. The key is the page's own public key.
+name: keep notes storage awake
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS "https://rbdvxlqiklhysozbggvo.supabase.co/rest/v1/review_notes?select=id&limit=1" -H "apikey: sb_publishable_nphoDMrnDntR_RMjH7qSLg_aOKZ8kU2" -o /dev/null -w "%{http_code}\n"
